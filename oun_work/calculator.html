@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        :root{
+            --primary-color: #0c1878;
+            --secondary-color: #fc9a04;
+            --shades: rgb(218, 218, 218);
+            --secondary-shades: #faf8f5;
+        }
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+
+        
+        }
+    #calculator
+    {
+        height: 55%;
+        min-height: 400px;
+        width: 60%;
+        display: flex;
+        justify-self: center;
+        margin: auto;
+        align-self: center;
+        flex-direction: column;
+        padding: 5px;
+        box-shadow: 1px 1px 15px 0px  black;
+        border-radius: 10px;
+        max-width: 400px;
+        transition: all .3s ease-in-out;
+        
+    }
+    #top
+    {
+        flex: 0.5;
+        border-bottom: 1px solid;
+        padding: 3px;
+        text-align: right;
+        font-weight: 600;
+
+    }
+    #top #localtime
+    {
+      text-align: left;
+    }
+    #middle
+    {
+        
+        width: 100%;
+        flex: 1;
+
+    }
+    #middle input{
+        width: 100%;
+        border: none;
+        height: 100%;
+        text-align: right;
+        padding: 10px;
+        font-weight: 600;
+
+    }
+    #lower
+    {
+        flex: 4;
+        display: flex;
+        flex-direction: row;
+        background-color: var(--shades);
+
+    }
+    #lower #left{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        flex: 3;
+
+    }
+    #lower #right {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0px;
+        flex: 1;
+        border-left: 1px solid;
+        padding: 2px 6px;
+    }
+    .btn{
+        color: var(--primary-color);
+        border: none;
+        font-weight: 600;
+        border-radius: 50%;
+        cursor: pointer;
+        margin: 2px;
+        width: 50px;
+        height: 50px;
+        transition: all .3s ease-in;
+
+    }
+    .btn:hover{
+        background-color: var(--secondary-color);
+        color: white;
+    }
+    .symbol{
+        color: var(--secondary-color);
+        background-color: var(--primary-color);
+        font-size: x-large;
+    }
+@media(max-width: 768px)
+{
+    
+    .btn{
+        color: var(--primary-color);
+        border: none;
+        font-weight: 600;
+        border-radius: 50%;
+        cursor: pointer;
+        margin: 2px;
+        width: 40px;
+        height: 40px;
+        transition: all .3s ease-in;
+
+    }
+    .symbol{
+        color: var(--secondary-color);
+        background-color: var(--primary-color);
+        font-size: x-large;
+    }
+    #calculator
+    {
+        height: 55%;
+        min-height: 400px;
+        width: 100%;
+        display: flex;
+        justify-self: center;
+        align-self: center;
+        flex-direction: column;
+        padding: 5px;
+        border-radius: 10px;
+        transition: all .3s ease-in-out;
+        
+    }
+}
+    </style>
+   
+</head>
+<body>
+    <button onclick="countdown()">Start counting</button>
+    <div id="timer"></div>
+    <div id="calculator">
+        <div id="top">
+          <div  id="localtime"></div>
+        </div>
+        <div id="middle">
+            <input type="text" id="input" >
+        </div>
+        <div id="lower">
+            <div id="left">
+                <button class="btn" id="" >M</button>
+                <button class="btn" id="" >R</button>
+                <button class="btn" id="" onclick="clearFields()">C</button>
+                <button class="btn" id="" onclick="put(this.innerHTML)">1</button>
+                <button class="btn" id="" onclick="put(this.innerHTML)">2</button>
+                <button class="btn" id="" onclick="put(this.innerHTML)">3</button>
+                <button class="btn" id="" onclick="put(this.innerHTML)">4</button>
+                <button class="btn" id="" onclick="put(this.innerHTML)">5</button>
+                <button class="btn" id="" onclick="put(this.innerHTML)">6</button>
+                <button class="btn" id="" onclick="put(this.innerHTML)">7</button>
+                <button class="btn" id="" onclick="put(this.innerHTML)">8</button>
+                <button class="btn" id="" onclick="put(this.innerHTML)">9</button>
+                <button class="btn" id="" onclick="put('.')">&dot;</button>
+                <button class="btn" id="" onclick="put(this.innerHTML)">0</button>
+                <button class="btn" id="" onclick="back()">&LeftArrow;</button>
+            </div>
+            <div id="right">
+                <button class="btn symbol" id="" onclick="operate('add')">+</button>
+                <button class="btn symbol" id="" onclick="operate('subtract')">-</button>
+                <button class="btn symbol" id="" onclick="operate('divide')">:</button>
+                <button class="btn symbol" id="" onclick="operate('multiply')">&times;</button>
+                <button class="btn symbol" id="" onclick="operate('equal')">&equals;</button>
+                <input type="text" hidden id="operand1">
+                <input type="text" hidden id="operation">
+                <input type="text" hidden id="operand2">
+
+
+            </div>
+        </div>
+    </div>
+   
+    <script>
+
+        window.addEventListener("keydown", (Event)=>{
+            document.getElementById("input").focus(); // to make sure the input is focused
+            if(Event.key == "Backspace") 
+        {
+            Event.preventDefault();  // to prevent the default backspace action
+            back();
+        }
+           else if(Event.key == "+")
+        { 
+            Event.preventDefault();
+            operate("add");
+        }
+            else if(Event.key == "*")
+        { 
+            Event.preventDefault(); 
+            operate("multiply"); 
+        }
+            else if(Event.key == "/")
+        { 
+            Event.preventDefault();
+            operate("divide");
+        }
+            else if(Event.key == "-")
+        { 
+            Event.preventDefault();
+            operate("subtract");
+        }
+        else if(Event.key == "=" || Event.key == "Enter"){
+            Event.preventDefault();
+            operate("equal");
+        }
+        else if(Event.key=="c"  || Event.key == "Delete") 
+        {
+            Event.preventDefault();
+            clearFields();
+        }
+        else{
+             if(isNaN(Event.key) && (Event.key != "Shift")  && Event.key != "Control" && Event.key != "Delete") // to prevent the default action of the key press 
+        {
+          document.getElementById("input").value="" // to clear the input field
+            Event.preventDefault();
+            let direction = 0; // to make the calculator shake
+            let px = "-5px"; 
+            let inte = setInterval(() => {
+                if(direction%2==0) {
+                    if(direction == 0)
+                {
+                    px = "-15px"; 
+
+                }
+                    px = "-30px";
+                }
+                else{
+                    px = "+30px";
+
+                }
+                document.getElementById('calculator').style.transform = "translateX("+px+")";
+                direction++;
+            }, 70); 
+            setTimeout(() => { 
+                clearInterval(inte);
+                document.getElementById('calculator').style.transform = "translateX(0px)";
+            }, 350); // to stop the shaking after 350ms
+
+        }
+
+        }
+
+            console.log(Event); // to see the key pressed in the console
+        });
+
+        function clearFields(){
+            document.getElementById("input").value = "";
+            document.getElementById("top").innerHTML = "";
+            document.getElementById("operand1").value="";
+            document.getElementById("operation").value="";
+            document.getElementById("operand2").value="";
+
+        }
+        function put(num)  //// to put the number in the input field
+        {
+            document.getElementById('input').value = document.getElementById('input').value + num; 
+
+        }
+        function operate(operation) // to perform the operation
+        {
+        if( (document.getElementById("operand1").value).trim() != "") // to check if the first operand is not empty, if there was another number and the current input is the second
+        {
+            document.getElementById("operand2").value = document.getElementById("input").value; // we make this number the second operand
+          let op1=document.getElementById("operand1").value; 
+          let opt = document.getElementById("operation").value; 
+          let op2=document.getElementById("operand2").value;
+          let result =  execute(op1,opt,op2); // we call the function to perform the operation
+          document.getElementById("operand1").value =result; // we make the result the first operand
+
+           
+        }
+            else{ //if this is the first number
+                document.querySelector("#operand1").value = document.querySelector("#input").value;  // we make this number the first operand
+            }
+            if(operation!="equal") // if the operation is not equal, we store the operation in the operation field
+            {
+                document.querySelector("#operation").value = operation; //we don't want to store '=' as an operator 
+            }
+            const operations = {
+                "add": "+", 
+            "multiply": "&times;",
+            "divide": "/",
+            "subtract": "-",
+            "equal": "="
+        };
+        let sign = operations[operation]; // we get the sign of the operation
+        if(operation!="equal") //
+        {
+            document.querySelector("#top").innerHTML = document.querySelector("#operand1").value + sign;
+            document.getElementById("input").value = "";
+        }
+        else // if the operation is equal, we show the result in the top field and clear the input field
+        
+        {
+            document.getElementById('top').innerHTML = ""; 
+            document.querySelector("input").value = document.querySelector("#operand1").value; 
+            document.getElementById("operand2").value = "";
+            document.getElementById("operand1").value = "";
+
+        }
+
+
+
+        }
+
+        function execute(op1,opt,op2) // to perform the operation
+        {
+            op1=parseFloat(op1);
+            op2=parseFloat(op2);
+            if(opt=="add")
+        {
+            return op1+op2;
+        }
+        else if(opt=="multiply")
+        {
+            return op1*op2;
+        }
+        else if(opt=="divide")
+        {
+            return op1/op2;
+        }
+        else if(opt=="subtract")
+        {
+            return op1-op2;
+        }
+        else
+        {
+            return null;
+        }
+        }
+        function back()
+        {
+            var del = document.getElementById("input").value;
+            del = del.split("");
+            del.pop();
+           document.getElementById("input").value = del.toString().replaceAll(",",""); 
+        }
+
+        function countdown(){
+            var num = 100;
+            setInterval(()=>{
+                document.getElementById("timer").innerHTML = num;
+                num = num - 1;
+            }, 1000); // to update the timer every second
+        }
+        function showtime() {
+      const now = new Date(); 
+      const hours = now.getHours().toString().padStart(2, '0'); 
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const seconds = now.getSeconds().toString().padStart(2, '0');
+      document.getElementById("localtime").textContent = `${hours}:${minutes}:${seconds}`;
+    }
+    window.addEventListener("load",()=>{
+      showtime();
+    })
+        
+        setInterval(showtime,1000); // to update the time every second
+        
+        
+    </script>
+</body>
+</html>

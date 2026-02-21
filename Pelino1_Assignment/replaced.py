@@ -1,14 +1,14 @@
 try:
     print("Welcome! Enter five texts to calculate their lengths (excluding spaces).\n")
     
-    # Getting inputs
+    
     a = input("Enter first text A: ")
     b = input("Enter second text B: ")
     c = input("Enter third text C: ")
     d = input("Enter fourth text D: ")
     e = input("Enter fifth text E: ")
     
-    # Removing spaces and calculating lengths
+    
     texts = {"A": a, "B": b, "C": c, "D": d, "E": e}
     results = []
     
@@ -16,7 +16,7 @@ try:
         clean_text = val.replace(" ", "")
         results.append(f"Length of {label} = {len(clean_text)}")
     
-    # Final output
+    
     print("\n" + ", ".join(results))
 
 except KeyboardInterrupt:
