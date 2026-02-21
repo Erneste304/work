@@ -1,0 +1,38 @@
+<?php
+include 'Register.php';
+session_start();
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head><u>Application forms</u>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholarship </title>
+</head><br><br>
+<body>
+    <form>
+    <div>
+    <label>First name:</label><input name="First name"type="txt"placeholder="enter the fname"required><br><br>
+    <label>Last name:</label><input name="Last name" type="txt"placeholder="enter the last name"required><br><br>
+    <label>Email:</label><input type="email"placeholder="enter email account"><br><br>
+    </div>
+    <div>
+        <label>birthdate:</label><input name="birthdate" type="date" required><br><br>
+        <label for="country-code">country-code:</label>
+        <select id="country-code" name="country-code">
+            <option value="+250">+250(Rwanda)</option>
+            <option value="+256">+256(Uganda)</option>
+            <option value="+264">+264(Congo)</option>
+            <option value="+1">+1(tanzania)</option>
+    <label>phone number:</label><input type=" "placeholder="enter phone nbr"required maxlength="9 character"><br><br>
+    <label>password:</label><input name="password" type="password"placeholder="enter password"required maxlength="8 character"><br><br>
+         </select>
+    </div>
+    <div>
+        <input type="reset">&nbsp;&nbsp;&nbsp;<input type="submit">
+    </div>
+
+
+    </form>
+</body>
+</html>
